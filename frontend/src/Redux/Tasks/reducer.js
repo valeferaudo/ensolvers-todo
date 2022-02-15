@@ -13,6 +13,9 @@ import {
   GET_ONE_TASK_FETCHING,
   GET_ONE_TASK_FULFILLED,
   GET_ONE_TASK_REJECTED,
+  DELETE_TASK_FETCHING,
+  DELETE_TASK_FULFILLED,
+  DELETE_TASK_REJECTED,
 } from '../../Constants/actionTypes';
 
 const initialState = {
@@ -126,6 +129,27 @@ const tasksReducer = (state = initialState, action) => {
         messageType: 'error',
         messageText: 'Cannot get task'
       };
+      case DELETE_TASK_FETCHING:
+        return {
+          ...state,
+          isLoading: true
+        };
+      case DELETE_TASK_FULFILLED:
+        return {
+          ...state,
+          isLoading: false,
+          messageType: 'success',
+          messageText: 'Deleted Client',
+          list: state.list.filter((task) => task.id !== action.payload)
+        };
+      case DELETE_TASK_REJECTED:
+        return {
+          ...state,
+          isLoading: false,
+          error: true,
+          messageType: 'error',
+          messageText: 'Cannot delete Task'
+        };
     default:
       return state;
   }

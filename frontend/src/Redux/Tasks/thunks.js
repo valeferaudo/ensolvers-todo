@@ -11,6 +11,9 @@ import {
   GET_ONE_TASK_FETCHING,
   GET_ONE_TASK_FULFILLED,
   GET_ONE_TASK_REJECTED,
+  DELETE_TASK_FETCHING,
+  DELETE_TASK_FULFILLED,
+  DELETE_TASK_REJECTED,
 } from '../../Constants/actionTypes';
 
 const BASE_URL = `http://localhost:3000/api/tasks`;
@@ -142,4 +145,36 @@ const getOneTaskFetching = () => ({
           dispatch(getOneTaskRejected());
         });
     };
+  };
+  const deleteTaskFetching = () => ({
+    type: DELETE_TASK_FETCHING
+  });
+  
+  const deleteTaskFulfilled = (payload) => ({
+    type: DELETE_TASK_FULFILLED,
+    payload
+  });
+  
+  const deleteTaskRejected = () => ({
+    type: DELETE_TASK_REJECTED
+  });
+  
+  export const deleteTask = (id) => (dispatch) => {
+    dispatch(deleteTaskFetching());
+    return fetch(`${BASE_URL}/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      }
+    })
+      .then((response) => {
+        if (response.status === 200 || response.status === 201) return response.json();
+        throw new Error(`HTTP ${response.status}`);
+      })
+      .then((response) => {
+        dispatch(deleteTaskFulfilled(response.data));
+      })
+      .catch(() => {
+        dispatch(deleteTaskRejected());
+      });
   };

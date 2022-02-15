@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addTask, getTasks, updateTask } from '../../Redux/Tasks/thunks';
+import { addTask, deleteTask, getTasks, updateTask } from '../../Redux/Tasks/thunks';
 import styles from './tasks.module.css';
 import Header from '../Shared/Header';
 // import Spinner from '../Shared/Spinner';
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { setModalType, setShowModal } from '../../Redux/Tasks/actions';
 import Modal from '../Shared/Modal';
 
@@ -52,6 +52,11 @@ function Tasks() {
       dispatch(getTasks());
     });
   }
+  const handleClickDelete = (id) => {
+    dispatch(deleteTask(id)).then(() => {
+      dispatch(getTasks());
+    });
+  };
   // if (isLoading || isLoadingForm)
   //   return <Spinner type="ThreeDots" color="#002147" height={80} width={80} />;
   return (
@@ -74,6 +79,7 @@ function Tasks() {
                   <td className={task.completed ? styles.completed : styles.description}>{task.description}</td>
                   <td>
                       <button className={styles.btnEdit} onClick={() => handleClickUpdate(task.id)}><FaEdit /></button>
+                      <button className={styles.btnRed} onClick={() => handleClickDelete(task.id)}><FaTrashAlt /></button>
                   </td>
               </tr>
               )
@@ -82,7 +88,7 @@ function Tasks() {
         </table>
         <form onSubmit={handleSubmit}>
             <input type="text" onChange={handleOnChange} value={taskText} />
-            <button type='submit'>Add</button>
+            <button type="submit">Add</button>
         </form>
       </div>
       {showModal && (
