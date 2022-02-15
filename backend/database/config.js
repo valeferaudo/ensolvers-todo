@@ -17,7 +17,7 @@ const Task = TaskModel(sequelize,DataTypes);
 Task.associate(sequelize.models);
 Folder.associate(sequelize.models);
 
-sequelize.sync({force: true})
+sequelize.sync({force: false})
   .then(() => {
     console.log('DataBase Connected')
   })

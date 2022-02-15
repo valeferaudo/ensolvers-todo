@@ -69,8 +69,10 @@ taskCtrl.create = async (req = request, res = response) => {
 }
 taskCtrl.update = async (req = request, res = response) => {
     try {
+        console.log(req.params.id)
+        console.log({description: req.body.description, completed: req.body.completed, FolderId: req.body.FolderId});
         const task = await Task.update(
-            {description: req.body.description, FolderId: req.body.FolderId},
+            {id:req.params.id, description: req.body.description, completed: req.body.completed, FolderId: req.body.FolderId},
             {where: {id: req.params.id}}
         );
         res.json({

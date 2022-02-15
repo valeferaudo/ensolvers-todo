@@ -62,7 +62,6 @@ folderCtrl.create = async (req = request, res = response) => {
 }
 folderCtrl.update = async (req = request, res = response) => {
     try {
-        console.log(req.body, req.params.id)
         const folder = await Folder.update(
             {title: req.body.title},
             {where: {id: req.params.id}}
