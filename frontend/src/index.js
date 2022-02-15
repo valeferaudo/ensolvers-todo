@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { store } from './Redux/store';
 import './index.css';
-import List from './Components/List';
+import Tasks from './Components/Tasks';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -13,7 +13,7 @@ ReactDOM.render(
       {/* <Router>
         <MainRoutes />
       </Router> */}
-    <List></List>
+    <Tasks></Tasks>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

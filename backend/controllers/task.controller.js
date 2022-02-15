@@ -21,7 +21,7 @@ taskCtrl.getAll = async (req = request, res = response) => {
 }
 taskCtrl.getOne = async (req = request, res = response) => {
     try {
-        const task = await Task.find({
+        const task = await Task.findOne({
             where: {
                 id: req.params.id
             },

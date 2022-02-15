@@ -5,6 +5,14 @@ import {
   UPDATE_TASK_FETCHING,
   UPDATE_TASK_FULFILLED,
   UPDATE_TASK_REJECTED,
+  ADD_TASK_FETCHING,
+  ADD_TASK_FULFILLED,
+  ADD_TASK_REJECTED,
+  SHOW_MODAL,
+  MODAL_TYPE,
+  GET_ONE_TASK_FETCHING,
+  GET_ONE_TASK_FULFILLED,
+  GET_ONE_TASK_REJECTED,
 } from '../../Constants/actionTypes';
 
 const initialState = {
@@ -14,6 +22,8 @@ const initialState = {
   messageType: '',
   messageText: '',
   showMessage: false,
+  showModal: false,
+  modalType:'',
   task: {},
 };
 
@@ -63,6 +73,58 @@ const tasksReducer = (state = initialState, action) => {
         error: true,
         messageType: 'error',
         messageText: 'Cannot update task',
+      };
+    case ADD_TASK_FETCHING:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case ADD_TASK_FULFILLED:
+      return {
+        ...state,
+        isLoading: false,
+        messageType: 'success',
+        messageText: 'Added Task',
+        list: [...state.list, action.payload],
+      };
+    case ADD_TASK_REJECTED:
+      return {
+        ...state,
+        isLoading: false,
+        error: true,
+        messageType: 'error',
+        messageText: 'Cannot add task',
+      };
+    case SHOW_MODAL: {
+      return {
+        ...state,
+        showModal: action.showModal,
+      };
+    }
+    case MODAL_TYPE: {
+      return {
+        ...state,
+        modalType: action.modalType,
+      };
+    }
+    case GET_ONE_TASK_FETCHING:
+      return {
+        ...state,
+        isLoadingForm: true
+      };
+    case GET_ONE_TASK_FULFILLED:
+      return {
+        ...state,
+        isLoadingForm: false,
+        task: action.payload
+      };
+    case GET_ONE_TASK_REJECTED:
+      return {
+        ...state,
+        isLoadingForm: false,
+        error: true,
+        messageType: 'error',
+        messageText: 'Cannot get task'
       };
     default:
       return state;
