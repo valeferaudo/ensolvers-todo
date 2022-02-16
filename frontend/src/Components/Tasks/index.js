@@ -1,25 +1,34 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addTask, deleteTask, getTasks, updateTask } from '../../Redux/Tasks/thunks';
+import { addTask, deleteTask, getTasks, updateTask, getFolderTasks } from '../../Redux/Tasks/thunks';
+import { getOneFolder } from '../../Redux/Folders/thunks'
 import styles from './tasks.module.css';
-import Header from '../Shared/Header';
 // import Spinner from '../Shared/Spinner';
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { setModalType, setShowModal } from '../../Redux/Tasks/actions';
 import Modal from '../Shared/Modal';
+import { useParams } from 'react-router-dom';
 
 function Tasks() {
   const dispatch = useDispatch();
   const tasks = useSelector((state) => state.tasks.list);
   // const isLoading = useSelector((state) => state.tasks.isLoading);
   // const isLoadingForm = useSelector((state) => state.tasks.isLoadingForm);
-  const [taskText, setTaskText] = useState('');
-  const [idActive, setIdActive] = useState('');
   const showModal = useSelector((state) => state.tasks.showModal);
   const modalType = useSelector((state) => state.tasks.modalType);
+  const folder = useSelector((state) => state.folders.folder);
+  const [taskText, setTaskText] = useState('');
+  const [idActive, setIdActive] = useState('');
+  const { id } = useParams();
 
   useEffect(() => {
-    dispatch(getTasks());
+    if (id !== undefined){
+      dispatch(getFolderTasks(id));
+      dispatch(getOneFolder(id))
+    } 
+    else {
+      dispatch(getTasks());
+    }
   }, [])
 
   const onCompleted = (id, task) => {
@@ -33,8 +42,8 @@ function Tasks() {
   const handleSubmit = (e) =>{
     e.preventDefault();
     if(taskText.trim() !== ''){
-      dispatch(addTask({description: taskText})).then(() => {
-        dispatch(getTasks());
+      dispatch(addTask({description: taskText, FolderId:id || null})).then(() => {
+        id !== undefined ? dispatch(getFolderTasks(id)) : dispatch(getTasks());
         setTaskText('');
       });
     }
@@ -54,16 +63,15 @@ function Tasks() {
   }
   const handleClickDelete = (id) => {
     dispatch(deleteTask(id)).then(() => {
-      dispatch(getTasks());
+      id !== undefined ? dispatch(getFolderTasks(id)) : dispatch(getTasks());
     });
   };
   // if (isLoading || isLoadingForm)
   //   return <Spinner type="ThreeDots" color="#002147" height={80} width={80} />;
   return (
     <>
-    <Header />
       <div className={styles.container}>
-        <h3>To-Do List</h3>
+        {id !== undefined ? <h3>Folders {'>'} {folder.title}</h3> : <h3>To-Do List</h3>}
         <table className={styles.table}>
           <tbody>
             {tasks.map((task) => {

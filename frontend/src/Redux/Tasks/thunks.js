@@ -14,6 +14,9 @@ import {
   DELETE_TASK_FETCHING,
   DELETE_TASK_FULFILLED,
   DELETE_TASK_REJECTED,
+  GET_FOLDER_TASKS_FETCHING,
+  GET_FOLDER_TASKS_FULFILLED,
+  GET_FOLDER_TASKS_REJECTED,
 } from '../../Constants/actionTypes';
 
 const BASE_URL = `http://localhost:5000/api/tasks`;
@@ -117,64 +120,97 @@ export const addTask = (task) => (dispatch) => {
     });
 };
 const getOneTaskFetching = () => ({
-    type: GET_ONE_TASK_FETCHING
-  });
-  
-  const getOneTaskFulfilled = (payload) => ({
-    type: GET_ONE_TASK_FULFILLED,
-    payload
-  });
-  
-  const getOneTaskRejected = () => ({
-    type: GET_ONE_TASK_REJECTED
-  });
-  
-  export const getOneTask = (id) => {
-    return (dispatch) => {
-      dispatch(getOneTaskFetching());
-      return fetch(`${BASE_URL}/${id}`)
-        .then((response) => {
-          if (response.status === 200 || response.status === 201) return response.json();
-          throw new Error(`HTTP ${response.status}`);
-        })
-        .then((response) => {
-          dispatch(getOneTaskFulfilled(response.data));
-          return response.data;
-        })
-        .catch(() => {
-          dispatch(getOneTaskRejected());
-        });
-    };
-  };
-  const deleteTaskFetching = () => ({
-    type: DELETE_TASK_FETCHING
-  });
-  
-  const deleteTaskFulfilled = (payload) => ({
-    type: DELETE_TASK_FULFILLED,
-    payload
-  });
-  
-  const deleteTaskRejected = () => ({
-    type: DELETE_TASK_REJECTED
-  });
-  
-  export const deleteTask = (id) => (dispatch) => {
-    dispatch(deleteTaskFetching());
-    return fetch(`${BASE_URL}/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      }
-    })
+  type: GET_ONE_TASK_FETCHING,
+});
+
+const getOneTaskFulfilled = (payload) => ({
+  type: GET_ONE_TASK_FULFILLED,
+  payload,
+});
+
+const getOneTaskRejected = () => ({
+  type: GET_ONE_TASK_REJECTED,
+});
+
+export const getOneTask = (id) => {
+  return (dispatch) => {
+    dispatch(getOneTaskFetching());
+    return fetch(`${BASE_URL}/${id}`)
       .then((response) => {
-        if (response.status === 200 || response.status === 201) return response.json();
+        if (response.status === 200 || response.status === 201)
+          return response.json();
         throw new Error(`HTTP ${response.status}`);
       })
       .then((response) => {
-        dispatch(deleteTaskFulfilled(response.data));
+        dispatch(getOneTaskFulfilled(response.data));
+        return response.data;
       })
       .catch(() => {
-        dispatch(deleteTaskRejected());
+        dispatch(getOneTaskRejected());
       });
   };
+};
+const deleteTaskFetching = () => ({
+  type: DELETE_TASK_FETCHING,
+});
+
+const deleteTaskFulfilled = (payload) => ({
+  type: DELETE_TASK_FULFILLED,
+  payload,
+});
+
+const deleteTaskRejected = () => ({
+  type: DELETE_TASK_REJECTED,
+});
+
+export const deleteTask = (id) => (dispatch) => {
+  dispatch(deleteTaskFetching());
+  return fetch(`${BASE_URL}/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+  })
+    .then((response) => {
+      if (response.status === 200 || response.status === 201)
+        return response.json();
+      throw new Error(`HTTP ${response.status}`);
+    })
+    .then((response) => {
+      dispatch(deleteTaskFulfilled(response.data));
+    })
+    .catch(() => {
+      dispatch(deleteTaskRejected());
+    });
+};
+
+const getFolderTasksFetching = () => ({
+  type: GET_FOLDER_TASKS_FETCHING,
+});
+
+const getFolderTasksFulfilled = (payload) => ({
+  type: GET_FOLDER_TASKS_FULFILLED,
+  payload,
+});
+
+const getFolderTasksRejected = () => ({
+  type: GET_FOLDER_TASKS_REJECTED,
+});
+
+export const getFolderTasks = (id) => {
+  return (dispatch) => {
+    dispatch(getFolderTasksFetching());
+    fetch(`${BASE_URL}/folder/${id}`)
+      .then((response) => {
+        if (response.status === 200 || response.status === 201)
+        return response.json();
+        throw new Error(`HTTP ${response.status}`);
+      })
+      .then((response) => {
+        dispatch(getFolderTasksFulfilled(response.data));
+      })
+      .catch(() => {
+        dispatch(getFolderTasksRejected());
+      });
+  };
+};

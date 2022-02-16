@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './folders.module.css';
-import Header from '../Shared/Header';
 // import Spinner from '../Shared/Spinner';
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { setModalType, setShowModal } from '../../Redux/Tasks/actions';
 import Modal from '../Shared/Modal';
-import { addFolder, deleteFolder, getFolders, updateFolder } from '../../Redux/Folders/thunks';
-import { useParams } from 'react-router-dom';
+import {
+  addFolder,
+  deleteFolder,
+  getFolders,
+  updateFolder,
+} from '../../Redux/Folders/thunks';
+import { useHistory } from 'react-router-dom';
 
 function Folders() {
   const dispatch = useDispatch();
@@ -18,25 +22,24 @@ function Folders() {
   const [idActive, setIdActive] = useState('');
   const showModal = useSelector((state) => state.tasks.showModal);
   const modalType = useSelector((state) => state.tasks.modalType);
-  const { id } = useParams();
+  const history = useHistory();
 
   useEffect(() => {
-    console.log(id)
     dispatch(getFolders());
-  }, [])
+  }, []);
 
   const handleOnChange = (e) => {
     setFolderText(e.target.value);
-  }
-  const handleSubmit = (e) =>{
+  };
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if(folderText.trim() !== ''){
-      dispatch(addFolder({title: folderText})).then(() => {
+    if (folderText.trim() !== '') {
+      dispatch(addFolder({ title: folderText })).then(() => {
         dispatch(getFolders());
         setFolderText('');
       });
     }
-  }
+  };
   const handleClickUpdate = (id) => {
     dispatch(setModalType('folder'));
     setIdActive(id);
@@ -49,7 +52,7 @@ function Folders() {
     dispatch(updateFolder(task, idActive)).then(() => {
       dispatch(getFolders());
     });
-  }
+  };
   const handleClickDelete = (id) => {
     dispatch(deleteFolder(id)).then(() => {
       dispatch(getFolders());
@@ -59,7 +62,6 @@ function Folders() {
   //   return <Spinner type="ThreeDots" color="#002147" height={80} width={80} />;
   return (
     <>
-    <Header />
       <div className={styles.container}>
         <h3>Folders</h3>
         <table className={styles.table}>
@@ -67,20 +69,40 @@ function Folders() {
             {folders.map((folder) => {
               return (
                 <tr key={folder.id}>
-                  <td >{folder.title}</td>
+                  <td>{folder.title}</td>
                   <td>
-                      <button className={styles.btnEdit} onClick={() => handleClickUpdate(folder.id)}><FaEdit /></button>
-                      <button className={styles.btnRed} onClick={() => handleClickDelete(folder.id)}><FaTrashAlt /></button>
-                      <button className={styles.btnGreen} onClick={() => handleClickDelete(folder.id)}>View items</button>
+                    <button
+                      className={styles.btnEdit}
+                      onClick={() => handleClickUpdate(folder.id)}
+                    >
+                      <FaEdit />
+                    </button>
+                    <button
+                      className={styles.btnRed}
+                      onClick={() => handleClickDelete(folder.id)}
+                    >
+                      <FaTrashAlt />
+                    </button>
+                    <button
+                      className={styles.btnGreen}
+                      onClick={() => history.push(`/folder/${folder.id}`)}
+                    >
+                      View items
+                    </button>
                   </td>
-              </tr>
-              )
+                </tr>
+              );
             })}
           </tbody>
         </table>
         <form onSubmit={handleSubmit}>
-            <input type="text" onChange={handleOnChange} value={folderText} placeholder="New Folder" />
-            <button type="submit">Add</button>
+          <input
+            type='text'
+            onChange={handleOnChange}
+            value={folderText}
+            placeholder='New Folder'
+          />
+          <button type='submit'>Add</button>
         </form>
       </div>
       {showModal && (

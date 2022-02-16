@@ -16,6 +16,9 @@ import {
   DELETE_TASK_FETCHING,
   DELETE_TASK_FULFILLED,
   DELETE_TASK_REJECTED,
+  GET_FOLDER_TASKS_FETCHING,
+  GET_FOLDER_TASKS_FULFILLED,
+  GET_FOLDER_TASKS_REJECTED,
 } from '../../Constants/actionTypes';
 
 const initialState = {
@@ -26,7 +29,7 @@ const initialState = {
   messageText: '',
   showMessage: false,
   showModal: false,
-  modalType:'',
+  modalType: '',
   task: {},
 };
 
@@ -113,13 +116,13 @@ const tasksReducer = (state = initialState, action) => {
     case GET_ONE_TASK_FETCHING:
       return {
         ...state,
-        isLoadingForm: true
+        isLoadingForm: true,
       };
     case GET_ONE_TASK_FULFILLED:
       return {
         ...state,
         isLoadingForm: false,
-        task: action.payload
+        task: action.payload,
       };
     case GET_ONE_TASK_REJECTED:
       return {
@@ -127,29 +130,48 @@ const tasksReducer = (state = initialState, action) => {
         isLoadingForm: false,
         error: true,
         messageType: 'error',
-        messageText: 'Cannot get task'
+        messageText: 'Cannot get task',
       };
-      case DELETE_TASK_FETCHING:
-        return {
-          ...state,
-          isLoading: true
-        };
-      case DELETE_TASK_FULFILLED:
-        return {
-          ...state,
-          isLoading: false,
-          messageType: 'success',
-          messageText: 'Deleted Client',
-          list: state.list.filter((task) => task.id !== action.payload)
-        };
-      case DELETE_TASK_REJECTED:
-        return {
-          ...state,
-          isLoading: false,
-          error: true,
-          messageType: 'error',
-          messageText: 'Cannot delete Task'
-        };
+    case DELETE_TASK_FETCHING:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case DELETE_TASK_FULFILLED:
+      return {
+        ...state,
+        isLoading: false,
+        messageType: 'success',
+        messageText: 'Deleted Client',
+        list: state.list.filter((task) => task.id !== action.payload),
+      };
+    case DELETE_TASK_REJECTED:
+      return {
+        ...state,
+        isLoading: false,
+        error: true,
+        messageType: 'error',
+        messageText: 'Cannot delete Task',
+      };
+    case GET_FOLDER_TASKS_FETCHING:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case GET_FOLDER_TASKS_FULFILLED:
+      return {
+        ...state,
+        isLoading: false,
+        list: action.payload,
+      };
+    case GET_FOLDER_TASKS_REJECTED:
+      return {
+        ...state,
+        isLoading: false,
+        error: true,
+        messageType: 'error',
+        messageText: 'Cannot get folder tasks',
+      };
     default:
       return state;
   }

@@ -84,5 +84,24 @@ taskCtrl.update = async (req = request, res = response) => {
         res.status(500).json({ msg: `Error: ${error}` });
     }
 }
-
+taskCtrl.getByFolder = async (req = request, res = response) => {
+    try {
+        console.log('aa',req.params.id)
+        const tasks = await Task.findAll({
+            where: {
+                FolderId: req.params.id
+            },
+            include: {
+                model: Folder,
+            }
+        });
+        res.json({
+            ok: true,
+            data: tasks
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: `Error: ${err}` });
+    }
+}
 module.exports = taskCtrl;

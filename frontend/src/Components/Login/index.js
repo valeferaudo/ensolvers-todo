@@ -3,6 +3,7 @@ import { login } from '../../Redux/Auth/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import Spinner from '../Shared/Spinner';
+import { useHistory } from 'react-router-dom';
 
 
 function Login() {
@@ -10,14 +11,14 @@ function Login() {
   const error = useSelector((state) => state.auth.error);
   const errorMsg = useSelector((state) => state.auth.messageText);
   const isLoading = useSelector((state) => state.auth.isLoading);
-
+  const history = useHistory();
   const [credentials, setCredentials] = useState({email:'', password:''});
 
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(login(credentials)).then((response) => {
       if (response.type === 'LOGIN_FULFILLED') {
-        //Redirect to tasks
+        history.push('/tasks')
       }
     })
   };

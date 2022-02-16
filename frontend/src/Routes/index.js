@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Switch, Redirect } from 'react-router-dom';
 import Spinner from '../Components/Shared/Spinner';
 import Forbidden from '../Components/Shared/Forbidden';
 
@@ -13,9 +13,9 @@ const MainRoutes = () => {
        <Suspense
         fallback={<Spinner type="TailSpin" color="#002147" height={80} width={80} text="To-Do List" />}>
         <Switch>
+          <Route path="/forbidden"  component={Forbidden} />
+          <Route path="/login"  component={AuthRoutes} />
           <Route path="/" component={TodoRoutes} />
-          <Route path="/auth" component={AuthRoutes} />
-          <Route path="/forbidden" component={Forbidden} />
         </Switch>
       </Suspense>
     </Router>
