@@ -43,3 +43,8 @@ You will also see any lint errors in the console.
 - redux-devtools-extension 2.13.9
 - redux-thunk 2.4.1
 - web-vitals 1.1.2
+
+### Created User credentials
+  
+  - Email: admin@admin.com
+  - Password: admin
