@@ -61,8 +61,8 @@ function Tasks() {
       dispatch(getTasks());
     });
   }
-  const handleClickDelete = (id) => {
-    dispatch(deleteTask(id)).then(() => {
+  const handleClickDelete = (idDeleted) => {
+    dispatch(deleteTask(idDeleted)).then(() => {
       id !== undefined ? dispatch(getFolderTasks(id)) : dispatch(getTasks());
     });
   };
