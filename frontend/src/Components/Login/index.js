@@ -1,30 +1,52 @@
 import styles from './login.module.css';
+import { login } from '../../Redux/Auth/thunks';
+import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import Spinner from '../Shared/Spinner';
+
 
 function Login() {
+  const dispatch = useDispatch();
+  const error = useSelector((state) => state.auth.error);
+  const errorMsg = useSelector((state) => state.auth.messageText);
+  const isLoading = useSelector((state) => state.auth.isLoading);
+
+  const [credentials, setCredentials] = useState({email:'', password:''});
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(login(credentials)).then((response) => {
+      if (response.type === 'LOGIN_FULFILLED') {
+        //Redirect to tasks
+      }
+    })
+  };
+  if (isLoading)
+    return <Spinner type="ThreeDots" color="#002147" height={80} width={80} />;
   return (
     <section className={styles.container}>
       <div className={styles.containerSummary}>
-        <form className={styles.form}>
-          <div>
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <div className={styles.inputContainer}>
             <input
               name='email'
-              label='Email'
-              element='input'
               placeholder='Enter your email'
+              onChange={e => setCredentials({...credentials, email: e.target.value})}
+              value={credentials.email}
             />
             <input
               name='password'
-              label='Password'
               type='password'
-              element='input'
               placeholder='Enter your password'
+              onChange={e => setCredentials({...credentials, password: e.target.value})}
+              value={credentials.password}
             />
           </div>
+          <div className={error ? styles.hidden : styles.visible}>
+            <span className={styles.errorMsg}>{error ? errorMsg : ''}</span>
+          </div>
           <div className={styles.buttonContainer}>
-            <button
-              className={styles.btnLogin}
-              type='submit'
-            >
+            <button className={styles.btnLogin} type='submit'>
               SIGN IN
             </button>
           </div>

@@ -7,6 +7,7 @@ import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { setModalType, setShowModal } from '../../Redux/Tasks/actions';
 import Modal from '../Shared/Modal';
 import { addFolder, deleteFolder, getFolders, updateFolder } from '../../Redux/Folders/thunks';
+import { useParams } from 'react-router-dom';
 
 function Folders() {
   const dispatch = useDispatch();
@@ -17,8 +18,10 @@ function Folders() {
   const [idActive, setIdActive] = useState('');
   const showModal = useSelector((state) => state.tasks.showModal);
   const modalType = useSelector((state) => state.tasks.modalType);
+  const { id } = useParams();
 
   useEffect(() => {
+    console.log(id)
     dispatch(getFolders());
   }, [])
 

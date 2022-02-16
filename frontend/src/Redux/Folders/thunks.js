@@ -16,7 +16,7 @@ import {
   DELETE_FOLDER_REJECTED,
 } from '../../Constants/actionTypes';
 
-const BASE_URL = `http://localhost:3000/api/folders`;
+const BASE_URL = `http://localhost:5000/api/folders`;
 const getFoldersFetching = () => ({
   type: GET_FOLDERS_FETCHING,
 });

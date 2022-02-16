@@ -3,7 +3,7 @@ import FolderForm from '../../Folders/Form';
 import TaskForm from '../../Tasks/Form';
 import styles from './modal.module.css';
 
-function Modal({ handleShowModal, modalType, meta, handleSubmit, fixData }) {
+function Modal({ handleShowModal, modalType, meta, handleSubmit }) {
   let modalComponent;
   switch (modalType) {
     case 'task':

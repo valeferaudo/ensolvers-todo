@@ -1,19 +1,19 @@
-import { Navigate, Route, Routes, useMatch } from 'react-router-dom';
+import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
 import Folders from '../Components/Folders';
 import Layout from '../Components/Shared/Layout';
 import Tasks from '../Components/Tasks'
 // import PrivateRouteTodo from './privateRouteTodo';
 
 const TodoRoutes = () => {
-  const { url } = useMatch();
+  const { url } = useRouteMatch();
   return (
     <Layout>
-      <Routes>
-        <Route path={`${url}/tasks`} element={Tasks} />
-        <Route path={`${url}/folders`} element={Folders} />
-        <Route path={`${url}/folder/:id`} element={Folders} />
-        <Navigate to={`${url}/`} element={Tasks} />
-      </Routes>
+      <Switch>
+        <Route path={`${url}/tasks`} exact component={Tasks} />
+        <Route path={`${url}/folders`} component={Folders} />
+        <Route path={`${url}/folder/:id`} component={Tasks} />
+        <Redirect to={`${url}/`} component={Tasks} />
+      </Switch>
     </Layout>
   );
 };

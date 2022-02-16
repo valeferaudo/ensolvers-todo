@@ -1,5 +1,3 @@
-import styles from './footer.module.css';
-
 function Footer(props) {
   return (
     <footer>

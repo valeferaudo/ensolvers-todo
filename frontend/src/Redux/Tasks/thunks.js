@@ -16,7 +16,7 @@ import {
   DELETE_TASK_REJECTED,
 } from '../../Constants/actionTypes';
 
-const BASE_URL = `http://localhost:3000/api/tasks`;
+const BASE_URL = `http://localhost:5000/api/tasks`;
 const getTasksFetching = () => ({
   type: GET_TASKS_FETCHING,
 });
