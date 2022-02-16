@@ -5,7 +5,7 @@ const { Folder } = require('../database/config');
 
 folderCtrl.getAll = async (req = request, res = response) => {
     try {
-        const folders = await Folder.findAll({});
+        const folders = await Folder.findAll();
         res.json({
             ok: true,
             data: folders
@@ -17,7 +17,7 @@ folderCtrl.getAll = async (req = request, res = response) => {
 }
 folderCtrl.getOne = async (req = request, res = response) => {
     try {
-        const folder = await Folder.find({
+        const folder = await Folder.findOne({
             where: {
                 id: req.params.id
             }

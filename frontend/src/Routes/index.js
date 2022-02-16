@@ -10,9 +10,7 @@ const MainRoutes = () => {
 
   return (
     <Router>
-      <Suspense
-        fallback={<Spinner type="TailSpin" color="#002147" height={80} width={80} text="MindSet" />}
-      >
+      <Suspense>
         <Routes>
           <Route path="/" element={todoRoutes} />
           <Route path="/auth" element={AuthRoutes} />

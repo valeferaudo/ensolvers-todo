@@ -1,4 +1,5 @@
 import React from 'react';
+import FolderForm from '../../Folders/Form';
 import TaskForm from '../../Tasks/Form';
 import styles from './modal.module.css';
 
@@ -7,10 +8,24 @@ function Modal({ handleShowModal, modalType, meta, handleSubmit, fixData }) {
   switch (modalType) {
     case 'task':
       modalComponent = (
-        <TaskForm id={meta} handleSubmit={handleSubmit} handleShowModal={handleShowModal} />
+        <TaskForm
+          id={meta}
+          handleSubmit={handleSubmit}
+          handleShowModal={handleShowModal}
+        />
       );
       break;
-    default: <></>
+    case 'folder':
+      modalComponent = (
+        <FolderForm
+          id={meta}
+          handleSubmit={handleSubmit}
+          handleShowModal={handleShowModal}
+        />
+      );
+      break;
+    default:
+      <></>;
   }
   return (
     <div className={styles.modalBackground}>

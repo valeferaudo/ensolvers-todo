@@ -13,7 +13,7 @@ function Tasks() {
   const tasks = useSelector((state) => state.tasks.list);
   // const isLoading = useSelector((state) => state.tasks.isLoading);
   // const isLoadingForm = useSelector((state) => state.tasks.isLoadingForm);
-  const [taskText, setTaskTest] = useState('');
+  const [taskText, setTaskText] = useState('');
   const [idActive, setIdActive] = useState('');
   const showModal = useSelector((state) => state.tasks.showModal);
   const modalType = useSelector((state) => state.tasks.modalType);
@@ -28,14 +28,14 @@ function Tasks() {
     });
   }
   const handleOnChange = (e) => {
-    setTaskTest(e.target.value);
+    setTaskText(e.target.value);
   }
   const handleSubmit = (e) =>{
     e.preventDefault();
     if(taskText.trim() !== ''){
       dispatch(addTask({description: taskText})).then(() => {
         dispatch(getTasks());
-        setTaskTest('');
+        setTaskText('');
       });
     }
   }
@@ -87,7 +87,7 @@ function Tasks() {
           </tbody>
         </table>
         <form onSubmit={handleSubmit}>
-            <input type="text" onChange={handleOnChange} value={taskText} />
+            <input type="text" onChange={handleOnChange} value={taskText} placeholder="New Task" />
             <button type="submit">Add</button>
         </form>
       </div>
