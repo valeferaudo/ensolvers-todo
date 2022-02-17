@@ -1,9 +1,11 @@
 const { Sequelize, DataTypes } = require('sequelize');
+const { createDatabase } = require('./createDatabase');
 
 const FolderModel = require('../models/folder');
 const TaskModel = require('../models/task');
 const UserModel = require('../models/user');
 
+createDatabase();
 const sequelize = new Sequelize('ensolvers_todo', 'root', 'root', {
   host: 'localhost',
   dialect:  'mysql',
